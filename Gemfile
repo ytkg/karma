@@ -3,3 +3,4 @@
 source "https://rubygems.org"
 
 gem 'rake'
+gem 'hitoku', git: 'git@github.com:ytkg/hitoku.git'
