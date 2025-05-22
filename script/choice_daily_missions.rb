@@ -14,8 +14,6 @@ missions = [
   "スクワット（#{random_count(10, 20, 5)}回）"
 ]
 
-puts "Hello"
-return
 client = TodoistCMS::Client.new(Hitoku.todoist_api_token)
 project = client.project(2354178106)
 

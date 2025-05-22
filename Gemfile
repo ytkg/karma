@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'hitoku', git: 'git@github.com:ytkg/hitoku.git'
+gem 'hitoku', github: 'ytkg/hitoku'
 gem 'rake'
 gem 'switchbot'
-gem 'todoist_cms', git: 'git@github.com:ytkg/todoist_cms.git'
+gem 'todoist_cms', github: 'ytkg/todoist_cms'

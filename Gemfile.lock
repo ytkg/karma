@@ -1,12 +1,12 @@
 GIT
-  remote: git@github.com:ytkg/hitoku.git
-  revision: 41b0ac663859c5e9f2603d659c7334028cbf7c4c
+  remote: https://github.com/ytkg/hitoku.git
+  revision: eb50b0a514a25bbc00406e451741d77962c0dc70
   specs:
     hitoku (0.1.0)
       activesupport
 
 GIT
-  remote: git@github.com:ytkg/todoist_cms.git
+  remote: https://github.com/ytkg/todoist_cms.git
   revision: 9f2dbbb69c02cb90ea89a5b3c95b4c37611f03d7
   specs:
     todoist_cms (0.1.0)
