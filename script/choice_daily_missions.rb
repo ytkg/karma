@@ -7,6 +7,7 @@ end
 
 missions = [
   "GitHubに草を生やす",
+  "PCデスクを綺麗にする",
   "部屋の掃除（#{random_count(10, 30, 5)}分）",
   "読書（#{random_count(10, 20, 5)}分）",
   "#{random_count(1500, 3000, 100)}歩以上歩く",
