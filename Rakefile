@@ -6,6 +6,6 @@ end
 
 namespace :daily_missions do
   task :choice do
-    bundle exec ruby 'script/choice_daily_missions.rb'
+    ruby 'script/choice_daily_missions.rb'
   end
 end
