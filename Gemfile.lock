@@ -1,9 +1,16 @@
 GIT
   remote: git@github.com:ytkg/hitoku.git
-  revision: d8dd3ec53486c54d7c604cbbab5828b39e28f17d
+  revision: 41b0ac663859c5e9f2603d659c7334028cbf7c4c
   specs:
     hitoku (0.1.0)
       activesupport
+
+GIT
+  remote: git@github.com:ytkg/todoist_cms.git
+  revision: 9f2dbbb69c02cb90ea89a5b3c95b4c37611f03d7
+  specs:
+    todoist_cms (0.1.0)
+      faraday
 
 GEM
   remote: https://rubygems.org/
@@ -27,12 +34,34 @@ GEM
     concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
     drb (2.2.1)
+    ethon (0.16.0)
+      ffi (>= 1.15.0)
+    faraday (2.12.2)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-net_http (3.4.0)
+      net-http (>= 0.5.0)
+    faraday-typhoeus (1.1.0)
+      faraday (~> 2.0)
+      typhoeus (~> 1.4)
+    ffi (1.17.0)
+    ffi (1.17.0-x86_64-darwin)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
+    json (2.9.0)
     logger (1.6.3)
     minitest (5.25.4)
+    net-http (0.6.0)
+      uri
     rake (13.2.1)
     securerandom (0.4.0)
+    switchbot (0.8.0)
+      activesupport
+      faraday (>= 2.0.0)
+      faraday-typhoeus
+    typhoeus (1.4.1)
+      ethon (>= 0.9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uri (1.0.2)
@@ -44,6 +73,8 @@ PLATFORMS
 DEPENDENCIES
   hitoku!
   rake
+  switchbot
+  todoist_cms!
 
 BUNDLED WITH
    2.5.16
