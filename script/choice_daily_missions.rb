@@ -12,7 +12,7 @@ missions = [
   "読書（#{random_count(10, 20, 5)}分）",
   "#{random_count(1500, 3000, 100)}歩以上歩く",
   "腕立て（#{random_count(10, 20, 5)}回）",
-  "スクワット（#{random_count(10, 20, 5)}回）"
+  "スクワット（#{random_count(10, 30, 5)}回）"
 ]
 
 client = TodoistCMS::Client.new(Hitoku.todoist_api_token)
