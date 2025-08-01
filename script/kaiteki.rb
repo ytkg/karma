@@ -18,12 +18,12 @@ class Kaiteki
     set_temperature = previous_metrics[:set_temperature]
 
     if current_metrics[:temperature] >= TARGET_TEMPERATURE + 2
-      set_temperature -= 1
+      set_temperature -= 1 if previous_metrics[:temperature] <= current_metrics[:temperature]
       aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
     end
 
     if current_metrics[:temperature] <= TARGET_TEMPERATURE - 2
-      set_temperature += 1
+      set_temperature += 1 if previous_metrics[:temperature] >= current_metrics[:temperature]
       aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
     end
 
