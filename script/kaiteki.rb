@@ -17,12 +17,12 @@ class Kaiteki
     aircon = switchbot_client.device('02-202103110155-72537419')
     set_temperature = previous_metrics[:set_temperature]
 
-    if current_metrics[:temperature] >= TARGET_TEMPERATURE + 2
+    if current_metrics[:temperature] >= TARGET_TEMPERATURE + 0.2
       set_temperature -= 1 if previous_metrics[:temperature] <= current_metrics[:temperature]
       aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
     end
 
-    if current_metrics[:temperature] <= TARGET_TEMPERATURE - 2
+    if current_metrics[:temperature] <= TARGET_TEMPERATURE - 0.2
       set_temperature += 1 if previous_metrics[:temperature] >= current_metrics[:temperature]
       aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
     end
