@@ -4,6 +4,7 @@ require 'ruby-ambient'
 
 class Kaiteki
   TARGET_TEMPERATURE = 24
+  ALLOWABLE_RANGE = 0.2
 
   def execute
     current_metrics = fetch_current_metrics
@@ -16,13 +17,13 @@ class Kaiteki
 
     set_temperature = previous_metrics[:set_temperature]
 
-    if current_metrics[:temperature] >= TARGET_TEMPERATURE + 0.2
-      set_temperature -= 1 if previous_metrics[:temperature] <= current_metrics[:temperature]
+    if should_lower_temperature?(current_metrics[:temperature], previous_metrics[:temperature])
+      set_temperature -= 1
       set_the_temperature(set_temperature)
     end
 
-    if current_metrics[:temperature] <= TARGET_TEMPERATURE - 0.2
-      set_temperature += 1 if previous_metrics[:temperature] >= current_metrics[:temperature]
+    if should_raise_temperature?(current_metrics[:temperature], previous_metrics[:temperature])
+      set_temperature += 1
       set_the_temperature(set_temperature)
     end
 
@@ -65,21 +66,41 @@ class Kaiteki
     }
   end
 
+  def higher_than_target?(temperature)
+    temperature >= TARGET_TEMPERATURE + ALLOWABLE_RANGE
+  end
+
+  def should_lower_temperature?(current_temperature, previous_temperature)
+    higher_than_target?(current_temperature) && previous_temperature <= current_temperature
+  end
+
+  def lower_than_target?(temperature)
+    temperature <= TARGET_TEMPERATURE - ALLOWABLE_RANGE
+  end
+
+  def should_raise_temperature?(current_temperature, previous_temperature)
+    lower_than_target?(current_temperature) && previous_temperature >= current_temperature
+  end
+
   def set_the_temperature(temperature)
     if development?
       puts "Set the temperature: #{temperature}"
-    else
-      aircon = switchbot_client.device('02-202103110155-72537419')
-      aircon.commands(command: 'setAll', parameter: "#{temperature},2,1,on", command_type: 'command')
+
+      return
     end
+
+    aircon = switchbot_client.device('02-202103110155-72537419')
+    aircon.commands(command: 'setAll', parameter: "#{temperature},2,1,on", command_type: 'command')
   end
 
   def send_metrics(metrics)
     if development?
       puts "Send metrics: #{metrics}"
-    else
-      ambient_client.send(d1: metrics[:temperature], d2: metrics[:humidity], d3: metrics[:discomfort_index], d4: metrics[:set_temperature])
+
+      return
     end
+
+    ambient_client.send(d1: metrics[:temperature], d2: metrics[:humidity], d3: metrics[:discomfort_index], d4: metrics[:set_temperature])
   end
 
   def development?
