@@ -14,17 +14,16 @@ class Kaiteki
 
     previous_metrics = fetch_previous_metrics
 
-    aircon = switchbot_client.device('02-202103110155-72537419')
     set_temperature = previous_metrics[:set_temperature]
 
     if current_metrics[:temperature] >= TARGET_TEMPERATURE + 0.2
       set_temperature -= 1 if previous_metrics[:temperature] <= current_metrics[:temperature]
-      aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
+      set_the_temperature(set_temperature)
     end
 
     if current_metrics[:temperature] <= TARGET_TEMPERATURE - 0.2
       set_temperature += 1 if previous_metrics[:temperature] >= current_metrics[:temperature]
-      aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
+      set_the_temperature(set_temperature)
     end
 
     send_metrics(current_metrics.merge(set_temperature:))
@@ -66,8 +65,25 @@ class Kaiteki
     }
   end
 
+  def set_the_temperature(temperature)
+    if development?
+      puts "Set the temperature: #{temperature}"
+    else
+      aircon = switchbot_client.device('02-202103110155-72537419')
+      aircon.commands(command: 'setAll', parameter: "#{temperature},2,1,on", command_type: 'command')
+    end
+  end
+
   def send_metrics(metrics)
-    ambient_client.send(d1: metrics[:temperature], d2: metrics[:humidity], d3: metrics[:discomfort_index], d4: metrics[:set_temperature])
+    if development?
+      puts "Send metrics: #{metrics}"
+    else
+      ambient_client.send(d1: metrics[:temperature], d2: metrics[:humidity], d3: metrics[:discomfort_index], d4: metrics[:set_temperature])
+    end
+  end
+
+  def development?
+    ENV.fetch('KARMA_ENV', nil) == 'development'
   end
 end
 
