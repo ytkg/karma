@@ -55,6 +55,7 @@ GEM
     net-http (0.6.0)
       uri
     rake (13.2.1)
+    ruby-ambient (0.1.0)
     securerandom (0.4.0)
     switchbot (0.8.0)
       activesupport
@@ -73,6 +74,7 @@ PLATFORMS
 DEPENDENCIES
   hitoku!
   rake
+  ruby-ambient
   switchbot
   todoist_cms!
 
