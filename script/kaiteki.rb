@@ -22,12 +22,12 @@ last_data = am.read().last
 aircon = client.device('02-202103110155-72537419')
 set_temperature = last_data[:d4]
 
-if temperature >= 24.3
+if temperature >= 24.2
   set_temperature -= 1
   aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
 end
 
-if temperature <= 23.7
+if temperature <= 23.8
   set_temperature += 1
   aircon.commands(command: 'setAll', parameter: "#{set_temperature},2,1,on", command_type: 'command')
 end
