@@ -19,11 +19,15 @@ class Kaiteki
 
     if should_lower_temperature?(current_metrics[:temperature], previous_metrics[:temperature])
       set_temperature -= 1
+      set_temperature = 30 if set_temperature > 30
+      set_temperature = 18 if set_temperature < 18
       set_the_temperature(set_temperature)
     end
 
     if should_raise_temperature?(current_metrics[:temperature], previous_metrics[:temperature])
       set_temperature += 1
+      set_temperature = 30 if set_temperature > 30
+      set_temperature = 18 if set_temperature < 18
       set_the_temperature(set_temperature)
     end
 
