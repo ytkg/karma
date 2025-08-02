@@ -40,7 +40,7 @@ class Kaiteki
   private
 
   def aircon_off?
-    true
+    false
   end
 
   def switchbot_client
