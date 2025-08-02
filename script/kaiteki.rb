@@ -13,6 +13,12 @@ class Kaiteki
       p "Current #{name}: #{value}"
     end
 
+    if aircon_off?
+      send_metrics(current_metrics.merge(set_temperature: 0))
+
+      return
+    end
+
     previous_metrics = fetch_previous_metrics
 
     set_temperature = previous_metrics[:set_temperature]
@@ -35,6 +41,10 @@ class Kaiteki
   end
 
   private
+
+  def aircon_off?
+    true
+  end
 
   def switchbot_client
     @switchbot_client ||= Switchbot::Client.new(Hitoku.switchbot_api_token, Hitoku.switchbot_api_secret)
