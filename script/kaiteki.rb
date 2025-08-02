@@ -3,6 +3,7 @@ require 'switchbot'
 require 'ruby-ambient'
 
 class Kaiteki
+  BASE_TEMPERATURE = 28
   TARGET_TEMPERATURE = 24
   ALLOWABLE_RANGE = 0.2
 
@@ -21,7 +22,7 @@ class Kaiteki
 
     previous_metrics = fetch_previous_metrics
 
-    set_temperature = previous_metrics[:set_temperature]
+    set_temperature = previous_metrics[:set_temperature].zero? ? BASE_TEMPERATURE : previous_metrics[:set_temperature]
 
     if should_lower_temperature?(current_metrics[:temperature], previous_metrics[:temperature])
       set_temperature = (set_temperature - 1).clamp(18, 30)
