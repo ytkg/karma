@@ -6,6 +6,7 @@ end
 
 task :kaiteki do
   ruby 'script/kaiteki.rb'
+  ruby 'script/ondo_monitoring.rb'
 end
 
 namespace :daily_missions do
