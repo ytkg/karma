@@ -43,7 +43,7 @@ class Kaiteki
     device = switchbot_client.device('D83BDA170B26')
     status = device.status
 
-    status[:body][:weight] < 100
+    status[:body][:weight] < 10
   end
 
   def switchbot_client
