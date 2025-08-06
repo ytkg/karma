@@ -40,7 +40,10 @@ class Kaiteki
   private
 
   def aircon_off?
-    false
+    device = switchbot_client.device('D83BDA170B26')
+    status = device.status
+
+    status[:body][:weight] < 100
   end
 
   def switchbot_client
