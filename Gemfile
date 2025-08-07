@@ -7,3 +7,8 @@ gem 'rake'
 gem 'switchbot'
 gem 'todoist_cms', github: 'ytkg/todoist_cms'
 gem 'ruby-ambient'
+
+group :test do
+  gem 'rspec'
+  gem 'webmock'
+end
