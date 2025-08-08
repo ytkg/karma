@@ -7,6 +7,11 @@ class Kaiteki
   TARGET_TEMPERATURE = 24
   ALLOWABLE_RANGE = 0.2
 
+  def initialize(switchbot_client: nil, ambient_client: nil)
+    @injected_switchbot_client = switchbot_client
+    @injected_ambient_client = ambient_client
+  end
+
   def execute
     current_metrics = fetch_current_metrics
 
@@ -47,11 +52,11 @@ class Kaiteki
   end
 
   def switchbot_client
-    @switchbot_client ||= Switchbot::Client.new(Hitoku.switchbot_api_token, Hitoku.switchbot_api_secret)
+    @switchbot_client ||= @injected_switchbot_client || Switchbot::Client.new(Hitoku.switchbot_api_token, Hitoku.switchbot_api_secret)
   end
 
   def ambient_client
-    @ambient_client ||= Ambient.new('93486', write_key: Hitoku.ambient_write_key, read_key: Hitoku.ambient_read_key)
+    @ambient_client ||= @injected_ambient_client || Ambient.new('93486', write_key: Hitoku.ambient_write_key, read_key: Hitoku.ambient_read_key)
   end
 
   def calculate_discomfort_index(temperature, humidity)
@@ -122,4 +127,6 @@ class Kaiteki
   end
 end
 
-Kaiteki.new.execute
+if __FILE__ == $0
+  Kaiteki.new.execute
+end
