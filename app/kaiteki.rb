@@ -1,6 +1,7 @@
 require 'hitoku'
 require 'switchbot'
 require 'ruby-ambient'
+require_relative '../lib/metrics/discomfort_index'
 
 class Kaiteki
   BASE_TEMPERATURE = 28
@@ -54,17 +55,13 @@ class Kaiteki
     @ambient_client ||= Ambient.new('93486', write_key: Hitoku.ambient_write_key, read_key: Hitoku.ambient_read_key)
   end
 
-  def calculate_discomfort_index(temperature, humidity)
-    0.81 * temperature + humidity * 0.01 * (0.99 * temperature - 14.3) + 46.3
-  end
-
   def fetch_current_metrics
     device = switchbot_client.device('B0E9FE5580EE')
     status = device.status
 
     temperature = status[:body][:temperature]
     humidity = status[:body][:humidity]
-    discomfort_index = calculate_discomfort_index(temperature, humidity)
+    discomfort_index = Metrics::DiscomfortIndex.calculate(temperature, humidity)
 
     { temperature:, humidity:, discomfort_index: }
   end
