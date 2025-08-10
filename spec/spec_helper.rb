@@ -14,6 +14,8 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+ENV['KARMA_ENV'] = test
+
 require 'webmock/rspec'
 
 RSpec.configure do |config|
