@@ -2,6 +2,7 @@ require 'hitoku'
 require 'switchbot'
 require 'ruby-ambient'
 require_relative '../lib/metrics/discomfort_index'
+require_relative '../lib/mock'
 
 class Kaiteki
   BASE_TEMPERATURE = 28
