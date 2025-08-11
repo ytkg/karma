@@ -1,19 +1,15 @@
 if ENV['KARMA_ENV'] == 'jules' || ENV['KARMA_ENV'] == 'test'
   module Hitoku
-    def self.switchbot_api_token
-      'YOUR_SWITCHBOT_API_TOKEN'
+    def self.method_missing(method_name, *arguments, &block)
+      if method_name.to_s.end_with?('_api_token', '_api_secret', '_write_key', '_read_key', '_token')
+        "YOUR_#{method_name.to_s.upcase}"
+      else
+        super
+      end
     end
 
-    def self.switchbot_api_secret
-      'YOUR_SWITCHBOT_API_SECRET'
-    end
-
-    def self.ambient_write_key
-      'YOUR_AMBIENT_WRITE_KEY'
-    end
-
-    def self.ambient_read_key
-      'YOUR_AMBIENT_READ_KEY'
+    def self.respond_to_missing?(method_name, include_private = false)
+      method_name.to_s.end_with?('_api_token', '_api_secret', '_write_key', '_read_key', '_token') || super
     end
   end
 end
