@@ -34,7 +34,7 @@ source ~/.bashrc
 スクリプトを実行する際の基本的なコマンドは以下の通りです。
 
 ```bash
-KARMA_ENV=test bundle exec ruby script/kaiteki.rb
+KARMA_ENV=jules bundle exec ruby script/kaiteki.rb
 ```
 
 **注意:**

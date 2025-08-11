@@ -1,4 +1,4 @@
-if ENV['KARMA_ENV'] == 'test'
+if ENV['KARMA_ENV'] == 'jules' || ENV['KARMA_ENV'] == 'test'
   module Hitoku
     def self.switchbot_api_token
       'YOUR_SWITCHBOT_API_TOKEN'
@@ -16,7 +16,9 @@ if ENV['KARMA_ENV'] == 'test'
       'YOUR_AMBIENT_READ_KEY'
     end
   end
+end
 
+if ENV['KARMA_ENV'] == 'jules'
   require 'webmock'
 
   include WebMock::API
