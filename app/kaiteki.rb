@@ -4,10 +4,10 @@ require 'ruby-ambient'
 require_relative '../lib/metrics/discomfort_index'
 require_relative '../lib/metrics/misnar_feeling_temperature'
 require_relative '../lib/mock'
+require_relative '../lib/temperature_regulator'
 
 class Kaiteki
   BASE_TEMPERATURE = 28
-  ALLOWABLE_RANGE = 0.2
 
   def initialize(target_temperature = 24)
     @target_temperature = target_temperature
@@ -27,20 +27,21 @@ class Kaiteki
     end
 
     previous_metrics = fetch_previous_metrics
+    previous_set_temperature = previous_metrics[:set_temperature]
 
-    set_temperature = previous_metrics[:set_temperature].zero? ? BASE_TEMPERATURE : previous_metrics[:set_temperature]
+    initial_set_temperature = previous_set_temperature.zero? ? BASE_TEMPERATURE : previous_set_temperature
 
-    if should_lower_temperature?(current_metrics[:temperature], previous_metrics[:temperature])
-      set_temperature = (set_temperature - 1).clamp(18, 30)
-      set_the_temperature(set_temperature)
+    new_set_temperature = temperature_regulator.regulate(
+      current_temperature: current_metrics[:temperature],
+      previous_temperature: previous_metrics[:temperature],
+      previous_set_temperature: initial_set_temperature
+    )
+
+    if new_set_temperature != initial_set_temperature
+      set_the_temperature(new_set_temperature)
     end
 
-    if should_raise_temperature?(current_metrics[:temperature], previous_metrics[:temperature])
-      set_temperature = (set_temperature + 1).clamp(18, 30)
-      set_the_temperature(set_temperature)
-    end
-
-    send_metrics(current_metrics.merge(set_temperature:))
+    send_metrics(current_metrics.merge(set_temperature: new_set_temperature))
   end
 
   private
@@ -84,20 +85,8 @@ class Kaiteki
     }
   end
 
-  def higher_than_target?(temperature)
-    temperature >= @target_temperature + ALLOWABLE_RANGE
-  end
-
-  def should_lower_temperature?(current_temperature, previous_temperature)
-    higher_than_target?(current_temperature) && previous_temperature <= current_temperature
-  end
-
-  def lower_than_target?(temperature)
-    temperature <= @target_temperature - ALLOWABLE_RANGE
-  end
-
-  def should_raise_temperature?(current_temperature, previous_temperature)
-    lower_than_target?(current_temperature) && previous_temperature >= current_temperature
+  def temperature_regulator
+    @temperature_regulator ||= TemperatureRegulator.new(@target_temperature)
   end
 
   def set_the_temperature(temperature)
