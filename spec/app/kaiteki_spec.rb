@@ -2,7 +2,7 @@ require_relative '../../app/kaiteki'
 
 describe Kaiteki do
   describe '#execute' do
-    subject(:execute) { described_class.new.execute }
+    subject(:execute) { described_class.new(target_temperature).execute }
 
     let(:switchbot_client_mock) { instance_double('mock') }
     let(:switchbot_device_mock) { instance_double('mock') }
@@ -35,17 +35,36 @@ describe Kaiteki do
       allow(ambient_client_mock).to receive(:send)
     end
 
+    context 'when target_temperature is 24' do
+      let(:target_temperature) { 24 }
 
-    it do
-      expect(ambient_client_mock).to receive(:send).with(
-        d1: 24.3,
-        d2: 63,
-        d3: 72.1,
-        d4: 27,
-        d5: 23.4
-      )
+      it do
+        expect(ambient_client_mock).to receive(:send).with(
+          d1: 24.3,
+          d2: 63,
+          d3: 72.1,
+          d4: 27,
+          d5: 23.4
+        )
 
-      execute
+        execute
+      end
+    end
+
+    context 'when target_temperature is 25' do
+      let(:target_temperature) { 25 }
+
+      it do
+        expect(ambient_client_mock).to receive(:send).with(
+          d1: 24.3,
+          d2: 63,
+          d3: 72.1,
+          d4: 28,
+          d5: 23.4
+        )
+
+        execute
+      end
     end
   end
 end

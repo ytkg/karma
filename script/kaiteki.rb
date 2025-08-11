@@ -1,3 +1,3 @@
 require_relative '../app/kaiteki'
 
-Kaiteki.new.execute
+Kaiteki.new(24).execute
