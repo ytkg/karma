@@ -57,9 +57,9 @@ fi
 echo "Installing Bundler..."
 gem install bundler
 
-# --- Install script-specific gems ---
-echo "Installing gems required by scripts..."
-gem install switchbot ruby-ambient
+# --- Install gems ---
+echo "Installing gems from Gemfile..."
+bundle install
 
 echo ""
 echo "--- Setup Complete! ---"
