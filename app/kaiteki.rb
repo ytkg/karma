@@ -2,6 +2,7 @@ require 'hitoku'
 require 'switchbot'
 require 'ruby-ambient'
 require_relative '../lib/metrics/discomfort_index'
+require_relative '../lib/metrics/misnar_feeling_temperature'
 require_relative '../lib/mock'
 
 class Kaiteki
@@ -66,8 +67,9 @@ class Kaiteki
     temperature = status[:body][:temperature]
     humidity = status[:body][:humidity]
     discomfort_index = Metrics::DiscomfortIndex.calculate(temperature, humidity)
+    misnar_feeling_temperature = Metrics::MisnarFeelingTemperature.calculate(temperature, humidity)
 
-    { temperature:, humidity:, discomfort_index: }
+    { temperature:, humidity:, discomfort_index:, misnar_feeling_temperature: }
   end
 
   def fetch_previous_metrics
@@ -77,7 +79,8 @@ class Kaiteki
       temperature: metrics[:d1],
       humidity: metrics[:d2],
       discomfort_index: metrics[:d3],
-      set_temperature: metrics[:d4]
+      set_temperature: metrics[:d4],
+      misnar_feeling_temperature: metrics[:d5]
     }
   end
 
@@ -115,7 +118,7 @@ class Kaiteki
       return
     end
 
-    ambient_client.send(d1: metrics[:temperature], d2: metrics[:humidity], d3: metrics[:discomfort_index], d4: metrics[:set_temperature])
+    ambient_client.send(d1: metrics[:temperature], d2: metrics[:humidity], d3: metrics[:discomfort_index], d4: metrics[:set_temperature], d5: metrics[:misnar_feeling_temperature])
   end
 
   def development?

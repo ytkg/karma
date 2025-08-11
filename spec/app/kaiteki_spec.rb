@@ -28,7 +28,8 @@ describe Kaiteki do
           d1: 23.8,
           d2: 62,
           d3: 71,
-          d4: 28
+          d4: 28,
+          d5: 23.0
         ]
       )
       allow(ambient_client_mock).to receive(:send)
@@ -41,8 +42,9 @@ describe Kaiteki do
         expect(ambient_client_mock).to receive(:send).with(
           d1: 24.3,
           d2: 63,
-          d3: 72.12991,
-          d4: 27
+          d3: 72.1,
+          d4: 27,
+          d5: 23.4
         )
 
         execute
@@ -56,8 +58,9 @@ describe Kaiteki do
         expect(ambient_client_mock).to receive(:send).with(
           d1: 24.3,
           d2: 63,
-          d3: 72.12991,
-          d4: 28
+          d3: 72.1,
+          d4: 28,
+          d5: 23.4
         )
 
         execute
