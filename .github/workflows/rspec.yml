@@ -1,0 +1,18 @@
+name: RSpec
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version-file: .ruby-version
+        bundler-cache: true # runs 'bundle install' and caches installed gems
+
+    - name: Run RSpec
+      run: bundle exec rspec
