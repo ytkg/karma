@@ -27,8 +27,8 @@ class OndoMonitoring
     {
       temperature:,
       humidity:,
-      discomfort_index: (Metrics::DiscomfortIndex.calculate(temperature, humidity)).round(1),
-      misnar_feeling_temperature: (Metrics::MisnarFeelingTemperature.calculate(temperature, humidity)).round(1)
+      discomfort_index: Metrics::DiscomfortIndex.calculate(temperature, humidity),
+      misnar_feeling_temperature: Metrics::MisnarFeelingTemperature.calculate(temperature, humidity)
     }
   end
 

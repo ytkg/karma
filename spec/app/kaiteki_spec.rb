@@ -40,9 +40,9 @@ describe Kaiteki do
       expect(ambient_client_mock).to receive(:send).with(
         d1: 24.3,
         d2: 63,
-        d3: 72.12991,
+        d3: 72.1,
         d4: 27,
-        d5: 23.445089139369703
+        d5: 23.4
       )
 
       execute
