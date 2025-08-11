@@ -6,8 +6,11 @@ require_relative '../lib/mock'
 
 class Kaiteki
   BASE_TEMPERATURE = 28
-  TARGET_TEMPERATURE = 24
   ALLOWABLE_RANGE = 0.2
+
+  def initialize(target_temperature = 24)
+    @target_temperature = target_temperature
+  end
 
   def execute
     current_metrics = fetch_current_metrics
@@ -79,7 +82,7 @@ class Kaiteki
   end
 
   def higher_than_target?(temperature)
-    temperature >= TARGET_TEMPERATURE + ALLOWABLE_RANGE
+    temperature >= @target_temperature + ALLOWABLE_RANGE
   end
 
   def should_lower_temperature?(current_temperature, previous_temperature)
@@ -87,7 +90,7 @@ class Kaiteki
   end
 
   def lower_than_target?(temperature)
-    temperature <= TARGET_TEMPERATURE - ALLOWABLE_RANGE
+    temperature <= @target_temperature - ALLOWABLE_RANGE
   end
 
   def should_raise_temperature?(current_temperature, previous_temperature)
