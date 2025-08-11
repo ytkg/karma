@@ -4,21 +4,21 @@ describe Metrics::DiscomfortIndex do
   describe '.calculate' do
     subject { described_class.calculate(temperature, humidity) }
 
-    context 'when temperature is 25 and humidity is 60' do
+    context '気温が25度で湿度が60%の場合' do
       let(:temperature) { 25 }
       let(:humidity) { 60 }
 
       it { is_expected.to eq(72.82) }
     end
 
-    context 'when temperature is 30 and humidity is 80' do
+    context '気温が30度で湿度が80%の場合' do
       let(:temperature) { 30 }
       let(:humidity) { 80 }
 
       it { is_expected.to eq(82.92) }
     end
 
-    context 'when temperature is 10 and humidity is 40' do
+    context '気温が10度で湿度が40%の場合' do
       let(:temperature) { 10 }
       let(:humidity) { 40 }
 
