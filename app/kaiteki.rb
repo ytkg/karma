@@ -26,8 +26,8 @@ class Kaiteki
     initial_set_temperature = previous_set_temperature.zero? ? BASE_TEMPERATURE : previous_set_temperature
 
     new_set_temperature = temperature_regulator.regulate(
-      current_temperature: current_metrics[:temperature],
-      previous_temperature: previous_metrics[:temperature],
+      current_value: current_metrics[:misnar_feeling_temperature],
+      previous_value: previous_metrics[:misnar_feeling_temperature],
       previous_set_temperature: initial_set_temperature
     )
 
