@@ -17,8 +17,10 @@ class Kaiteki
 
     if air_conditioner.off?
       metrics_repository.send(
-        current_metrics.merge(set_temperature: 0),
-        comment: 'エアコンがOFFのため、操作をスキップしました'
+        current_metrics.merge(
+          set_temperature: 0,
+          comment: 'エアコンがOFFのため、操作をスキップしました'
+        )
       )
       return
     end
@@ -49,8 +51,10 @@ class Kaiteki
               end
 
     metrics_repository.send(
-      current_metrics.merge(set_temperature: new_set_temperature),
-      comment: comment
+      current_metrics.merge(
+        set_temperature: new_set_temperature,
+        comment: comment
+      )
     )
   end
 

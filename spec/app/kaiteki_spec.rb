@@ -31,9 +31,12 @@ describe Kaiteki do
 
         expect(air_conditioner).not_to receive(:set_temperature)
 
-        expected_metrics = { temperature: 25, humidity: 50, discomfort_index: 73.5, misnar_feeling_temperature: 24.0, set_temperature: 0 }
-        expected_comment = 'エアコンがOFFのため、操作をスキップしました'
-        expect(metrics_repository).to receive(:send).with(expected_metrics, comment: expected_comment)
+        expected_metrics = {
+          temperature: 25, humidity: 50, discomfort_index: 73.5, misnar_feeling_temperature: 24.0,
+          set_temperature: 0,
+          comment: 'エアコンがOFFのため、操作をスキップしました'
+        }
+        expect(metrics_repository).to receive(:send).with(expected_metrics)
 
         execute
       end
@@ -51,9 +54,12 @@ describe Kaiteki do
 
         expect(air_conditioner).to receive(:set_temperature).with(27)
 
-        expected_metrics = { temperature: 24.3, humidity: 63, discomfort_index: 72.1, misnar_feeling_temperature: 23.4, set_temperature: 27 }
-        expected_comment = '体感温度が23.4°だったので、エアコンの設定温度を27°に変更しました'
-        expect(metrics_repository).to receive(:send).with(expected_metrics, comment: expected_comment)
+        expected_metrics = {
+          temperature: 24.3, humidity: 63, discomfort_index: 72.1, misnar_feeling_temperature: 23.4,
+          set_temperature: 27,
+          comment: '体感温度が23.4°だったので、エアコンの設定温度を27°に変更しました'
+        }
+        expect(metrics_repository).to receive(:send).with(expected_metrics)
 
         execute
       end
@@ -71,9 +77,12 @@ describe Kaiteki do
 
         expect(air_conditioner).not_to receive(:set_temperature)
 
-        expected_metrics = { temperature: 24.0, humidity: 60, discomfort_index: 70.0, misnar_feeling_temperature: 23.1, set_temperature: 28 }
-        expected_comment = '体感温度が23.1°で目標範囲内のため、エアコンの設定温度は変更しませんでした'
-        expect(metrics_repository).to receive(:send).with(expected_metrics, comment: expected_comment)
+        expected_metrics = {
+          temperature: 24.0, humidity: 60, discomfort_index: 70.0, misnar_feeling_temperature: 23.1,
+          set_temperature: 28,
+          comment: '体感温度が23.1°で目標範囲内のため、エアコンの設定温度は変更しませんでした'
+        }
+        expect(metrics_repository).to receive(:send).with(expected_metrics)
 
         execute
       end
@@ -91,9 +100,12 @@ describe Kaiteki do
 
         expect(air_conditioner).not_to receive(:set_temperature)
 
-        expected_metrics = { temperature: 25.0, humidity: 65, discomfort_index: 75.0, misnar_feeling_temperature: 24.2, set_temperature: 28 }
-        expected_comment = '体感温度が24.2°で改善傾向のため、エアコンの設定温度は変更しませんでした'
-        expect(metrics_repository).to receive(:send).with(expected_metrics, comment: expected_comment)
+        expected_metrics = {
+          temperature: 25.0, humidity: 65, discomfort_index: 75.0, misnar_feeling_temperature: 24.2,
+          set_temperature: 28,
+          comment: '体感温度が24.2°で改善傾向のため、エアコンの設定温度は変更しませんでした'
+        }
+        expect(metrics_repository).to receive(:send).with(expected_metrics)
 
         execute
       end
