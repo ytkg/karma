@@ -9,17 +9,21 @@ class TemperatureRegulator
   end
 
   def regulate(current_value:, previous_value:, previous_set_temperature:)
-    set_temperature = previous_set_temperature
-
     if should_lower_temperature?(current_value, previous_value)
-      return (set_temperature - 1).clamp(MIN_SET_TEMPERATURE, MAX_SET_TEMPERATURE)
+      return { temperature: (previous_set_temperature - 1).clamp(MIN_SET_TEMPERATURE, MAX_SET_TEMPERATURE), reason: :lowered }
     end
 
     if should_raise_temperature?(current_value, previous_value)
-      return (set_temperature + 1).clamp(MIN_SET_TEMPERATURE, MAX_SET_TEMPERATURE)
+      return { temperature: (previous_set_temperature + 1).clamp(MIN_SET_TEMPERATURE, MAX_SET_TEMPERATURE), reason: :raised }
     end
 
-    set_temperature
+    reason = if !higher_than_target?(current_value) && !lower_than_target?(current_value)
+               :in_range
+             else
+               :improving_trend
+             end
+
+    { temperature: previous_set_temperature, reason: reason }
   end
 
   private

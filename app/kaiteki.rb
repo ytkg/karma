@@ -28,19 +28,24 @@ class Kaiteki
 
     initial_set_temperature = previous_set_temperature.zero? ? BASE_TEMPERATURE : previous_set_temperature
 
-    new_set_temperature = temperature_regulator.regulate(
+    regulation_result = temperature_regulator.regulate(
       current_value: current_metrics[:misnar_feeling_temperature],
       previous_value: previous_metrics[:misnar_feeling_temperature],
       previous_set_temperature: initial_set_temperature
     )
 
+    new_set_temperature = regulation_result[:temperature]
+    reason = regulation_result[:reason]
     feeling_temperature = current_metrics[:misnar_feeling_temperature]
 
-    comment = if new_set_temperature != initial_set_temperature
+    comment = case reason
+              when :lowered, :raised
                 air_conditioner.set_temperature(new_set_temperature)
                 "体感温度が#{feeling_temperature}°だったので、エアコンの設定温度を#{new_set_temperature}°に変更しました"
-              else
-                "体感温度が#{feeling_temperature}°だったため、エアコンの設定温度は変更しませんでした"
+              when :in_range
+                "体感温度が#{feeling_temperature}°で目標範囲内のため、エアコンの設定温度は変更しませんでした"
+              when :improving_trend
+                "体感温度が#{feeling_temperature}°で改善傾向のため、エアコンの設定温度は変更しませんでした"
               end
 
     metrics_repository.send(
