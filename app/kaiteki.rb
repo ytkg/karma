@@ -16,7 +16,10 @@ class Kaiteki
     current_metrics.each { |name, value| p "Current #{name}: #{value}" }
 
     if air_conditioner.off?
-      metrics_repository.send(current_metrics.merge(set_temperature: 0))
+      metrics_repository.send(
+        current_metrics.merge(set_temperature: 0),
+        comment: 'エアコンがOFFのため、操作をスキップしました'
+      )
       return
     end
 

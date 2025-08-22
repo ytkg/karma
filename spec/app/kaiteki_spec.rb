@@ -22,6 +22,25 @@ describe Kaiteki do
       allow(metrics_repository).to receive(:send)
     end
 
+    context 'エアコンがOFFの場合' do
+      let(:target_temperature) { 23 }
+
+      it 'エアコンを操作せずに、理由をコメントしてメトリクスを送信すること' do
+        allow(air_conditioner).to receive(:off?).and_return(true)
+        allow(meter).to receive(:fetch_metrics).and_return(
+          { temperature: 25, humidity: 50, discomfort_index: 73.5, misnar_feeling_temperature: 24.0 }
+        )
+
+        expect(air_conditioner).not_to receive(:set_temperature)
+
+        expected_metrics = { temperature: 25, humidity: 50, discomfort_index: 73.5, misnar_feeling_temperature: 24.0, set_temperature: 0 }
+        expected_comment = 'エアコンがOFFのため、操作をスキップしました'
+        expect(metrics_repository).to receive(:send).with(expected_metrics, comment: expected_comment)
+
+        execute
+      end
+    end
+
     context 'when the effective temperature is higher than the target and the trend is unfavorable' do
       let(:target_temperature) { 23 }
 

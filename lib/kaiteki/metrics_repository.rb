@@ -33,7 +33,7 @@ class Kaiteki
     # メトリクスをAmbientに送信する
     # @param metrics [Hash] 送信するメトリクス
     # @param comment [String] コメント
-    def send(metrics, comment: nil)
+    def send(metrics, comment:)
       return if development?
 
       payload = {
@@ -41,9 +41,9 @@ class Kaiteki
         d2: metrics[:humidity],
         d3: metrics[:discomfort_index],
         d4: metrics[:set_temperature],
-        d5: metrics[:misnar_feeling_temperature]
+        d5: metrics[:misnar_feeling_temperature],
+        cmnt: comment
       }
-      payload[:cmnt] = comment if comment
 
       @client.send(payload)
     end
