@@ -39,9 +39,10 @@ describe Kaiteki do
         # So, the temperature should be lowered by 1 degree from the previous set temperature (28 -> 27).
 
         expect(air_conditioner).to receive(:set_temperature).with(27)
-        expect(metrics_repository).to receive(:send).with(
-          { temperature: 24.3, humidity: 63, discomfort_index: 72.1, misnar_feeling_temperature: 23.4, set_temperature: 27 }
-        )
+
+        expected_metrics = { temperature: 24.3, humidity: 63, discomfort_index: 72.1, misnar_feeling_temperature: 23.4, set_temperature: 27 }
+        expected_comment = '体感温度が23.4°だったので、エアコンの設定温度を27°に変更しました'
+        expect(metrics_repository).to receive(:send).with(expected_metrics, comment: expected_comment)
 
         execute
       end
@@ -61,9 +62,10 @@ describe Kaiteki do
         # So, the temperature should not be changed.
 
         expect(air_conditioner).not_to receive(:set_temperature)
-        expect(metrics_repository).to receive(:send).with(
-          { temperature: 24.0, humidity: 60, discomfort_index: 70.0, misnar_feeling_temperature: 23.1, set_temperature: 28 }
-        )
+
+        expected_metrics = { temperature: 24.0, humidity: 60, discomfort_index: 70.0, misnar_feeling_temperature: 23.1, set_temperature: 28 }
+        expected_comment = '体感温度が23.1°だったため、エアコンの設定温度は変更しませんでした'
+        expect(metrics_repository).to receive(:send).with(expected_metrics, comment: expected_comment)
 
         execute
       end

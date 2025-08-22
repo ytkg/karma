@@ -71,9 +71,21 @@ RSpec.describe Kaiteki::MetricsRepository do
       }
     end
 
-    it '渡されたメトリクスをAmbientに送信すること' do
-      expect(ambient_client_mock).to receive(:send).with(expected_payload)
-      repository.send(metrics_to_send)
+    context 'コメントがない場合' do
+      it '渡されたメトリクスをAmbientに送信すること' do
+        expect(ambient_client_mock).to receive(:send).with(expected_payload)
+        repository.send(metrics_to_send)
+      end
+    end
+
+    context 'コメントがある場合' do
+      let(:comment) { 'テストコメント' }
+
+      it 'メトリクスとコメントをAmbientに送信すること' do
+        expected_payload_with_comment = expected_payload.merge(cmnt: comment)
+        expect(ambient_client_mock).to receive(:send).with(expected_payload_with_comment)
+        repository.send(metrics_to_send, comment: comment)
+      end
     end
   end
 end

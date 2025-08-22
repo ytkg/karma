@@ -31,9 +31,19 @@ class Kaiteki
       previous_set_temperature: initial_set_temperature
     )
 
-    air_conditioner.set_temperature(new_set_temperature) if new_set_temperature != initial_set_temperature
+    feeling_temperature = current_metrics[:misnar_feeling_temperature]
 
-    metrics_repository.send(current_metrics.merge(set_temperature: new_set_temperature))
+    comment = if new_set_temperature != initial_set_temperature
+                air_conditioner.set_temperature(new_set_temperature)
+                "体感温度が#{feeling_temperature}°だったので、エアコンの設定温度を#{new_set_temperature}°に変更しました"
+              else
+                "体感温度が#{feeling_temperature}°だったため、エアコンの設定温度は変更しませんでした"
+              end
+
+    metrics_repository.send(
+      current_metrics.merge(set_temperature: new_set_temperature),
+      comment: comment
+    )
   end
 
   private
