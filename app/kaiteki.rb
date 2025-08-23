@@ -2,6 +2,7 @@ require_relative '../lib/temperature_regulator'
 require_relative '../lib/kaiteki/metrics_repository'
 require_relative '../lib/kaiteki/meter'
 require_relative '../lib/kaiteki/air_conditioner'
+require_relative '../lib/kaiteki/comment_builder'
 
 # 複数のサービスクラスを協調させ、快適な温度を維持するためのビジネスロジックを実行するクラス
 class Kaiteki
@@ -40,15 +41,15 @@ class Kaiteki
     reason = regulation_result[:reason]
     feeling_temperature = current_metrics[:misnar_feeling_temperature]
 
-    comment = case reason
-              when :lowered, :raised
-                air_conditioner.set_temperature(new_set_temperature)
-                "体感温度が#{feeling_temperature}°だったので、エアコンの設定温度を#{new_set_temperature}°に変更しました"
-              when :in_range
-                "体感温度が#{feeling_temperature}°で目標範囲内のため、エアコンの設定温度は変更しませんでした"
-              when :improving_trend
-                "体感温度が#{feeling_temperature}°で改善傾向のため、エアコンの設定温度は変更しませんでした"
-              end
+    if [:lowered, :raised].include?(reason)
+      air_conditioner.set_temperature(new_set_temperature)
+    end
+
+    comment = Kaiteki::CommentBuilder.new(
+      reason: reason,
+      feeling_temperature: feeling_temperature,
+      new_set_temperature: new_set_temperature
+    ).build
 
     metrics_repository.send(
       current_metrics.merge(

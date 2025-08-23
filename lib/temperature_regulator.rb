@@ -10,11 +10,11 @@ class TemperatureRegulator
 
   def regulate(current_value:, previous_value:, previous_set_temperature:)
     if should_lower_temperature?(current_value, previous_value)
-      return { temperature: (previous_set_temperature - 1).clamp(MIN_SET_TEMPERATURE, MAX_SET_TEMPERATURE), reason: :lowered }
+      return new_temperature_result(previous_set_temperature, :down)
     end
 
     if should_raise_temperature?(current_value, previous_value)
-      return { temperature: (previous_set_temperature + 1).clamp(MIN_SET_TEMPERATURE, MAX_SET_TEMPERATURE), reason: :raised }
+      return new_temperature_result(previous_set_temperature, :up)
     end
 
     reason = if !higher_than_target?(current_value) && !lower_than_target?(current_value)
@@ -28,12 +28,25 @@ class TemperatureRegulator
 
   private
 
+  def new_temperature_result(previous_temp, direction)
+    adjustment = (direction == :up) ? 1 : -1
+    new_temperature = (previous_temp + adjustment).clamp(MIN_SET_TEMPERATURE, MAX_SET_TEMPERATURE)
+
+    reason = if new_temperature == previous_temp
+               (direction == :up) ? :at_max_limit : :at_min_limit
+             else
+               (direction == :up) ? :raised : :lowered
+             end
+
+    { temperature: new_temperature, reason: reason }
+  end
+
   def higher_than_target?(value)
     value >= @target_value + ALLOWABLE_RANGE
   end
 
   def should_lower_temperature?(current_value, previous_value)
-    higher_than_target?(current_value) && is_trend_unfavorable?(current_value, previous_value)
+    higher_than_target?(current_value) && is_not_improving?(current_value, previous_value)
   end
 
   def lower_than_target?(value)
@@ -41,10 +54,10 @@ class TemperatureRegulator
   end
 
   def should_raise_temperature?(current_value, previous_value)
-    lower_than_target?(current_value) && is_trend_unfavorable?(current_value, previous_value)
+    lower_than_target?(current_value) && is_not_improving?(current_value, previous_value)
   end
 
-  def is_trend_unfavorable?(current_value, previous_value)
+  def is_not_improving?(current_value, previous_value)
     (current_value - @target_value).abs >= (previous_value - @target_value).abs
   end
 end
