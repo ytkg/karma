@@ -75,7 +75,7 @@ describe TemperatureRegulator do
       let(:previous_value) { 24.2 }
 
       it '最低設定温度と理由が返される（クランプされる）' do
-        expect(regulate).to eq({ temperature: described_class::MIN_SET_TEMPERATURE, reason: :at_limit })
+        expect(regulate).to eq({ temperature: described_class::MIN_SET_TEMPERATURE, reason: :at_min_limit })
       end
     end
 
@@ -87,7 +87,7 @@ describe TemperatureRegulator do
       let(:previous_value) { 23.8 }
 
       it '最高設定温度と理由が返される（クランプされる）' do
-        expect(regulate).to eq({ temperature: described_class::MAX_SET_TEMPERATURE, reason: :at_limit })
+        expect(regulate).to eq({ temperature: described_class::MAX_SET_TEMPERATURE, reason: :at_max_limit })
       end
     end
   end

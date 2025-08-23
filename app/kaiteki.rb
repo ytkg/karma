@@ -50,6 +50,10 @@ class Kaiteki
                 "体感温度が#{feeling_temperature}°で改善傾向のため、エアコンの設定温度は変更しませんでした"
               when :at_limit
                 "設定温度が上限か下限のため、エアコンの設定温度は変更しませんでした"
+              when :at_min_limit
+                "設定温度が下限のため、エアコンの設定温度は変更しませんでした"
+              when :at_max_limit
+                "設定温度が上限のため、エアコンの設定温度は変更しませんでした"
               end
 
     metrics_repository.send(
