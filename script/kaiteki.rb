@@ -1,6 +1,6 @@
 require_relative '../app/kaiteki'
 
-TEMP = 23.2
+TEMP = 23.8
 
 Kaiteki.new(TEMP).execute
 
