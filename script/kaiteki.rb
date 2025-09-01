@@ -1,8 +1,10 @@
 require_relative '../app/kaiteki'
 
-Kaiteki.new(23.5).execute
+TEMP = 23.2
+
+Kaiteki.new(TEMP).execute
 
 puts '5分後に再度実行します'
 sleep 300
 
-Kaiteki.new(23.5).execute
+Kaiteki.new(TEMP).execute
