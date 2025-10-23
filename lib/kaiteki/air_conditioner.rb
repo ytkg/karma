@@ -22,7 +22,7 @@ class Kaiteki
     def set_temperature(temperature)
       return if development?
 
-      aircon_ir_device.commands(command: 'setAll', parameter: "#{temperature},2,1,on", command_type: 'command')
+      aircon_ir_device.commands(command: 'setAll', parameter: "#{temperature},5,1,on", command_type: 'command')
     end
 
     private
